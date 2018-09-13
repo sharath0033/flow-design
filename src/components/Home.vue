@@ -1,10 +1,10 @@
 <template>
   <div id="wrapper">
     <div id="home-container">
-      <div id="editBtn" v-on:click="showPopupDialog = true">Edit</div>
+      <div id="editBtn" v-on:click="showPopupDialog">Edit</div>
       <div id="section">
 
-        <template v-for="item in data">
+        <template v-for="item in getData">
           <div class="module" :key="item.itemId">
             <div class="content" v-bind:class="typeData[item.type].class">
               <div class="type">{{ typeData[item.type].type }}</div>
@@ -12,7 +12,7 @@
             </div>
           </div>
 
-          <template v-if="item.children">
+          <template v-if="item.children.length>0">
             <div class="module" v-for="subItem in item.children" :key="subItem.subItem">
               <div class="content" v-bind:class="typeData[subItem.type].class">
                 <div class="type">{{ typeData[subItem.type].type.replace('[0]', subItem.id) }}</div>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <Edit v-show="showPopupDialog"/>
+    <Edit v-show="getPopupDialogState"/>
     
   </div>
 </template>
@@ -36,76 +36,34 @@ import Edit from './Edit.vue'
 
 export default {
   name: 'Home',
-  data: function() {
-    return{
-      showPopupDialog: true,
-      typeData: {
-        "100": {
-          type: "End Client",
-          class: 'client'
-        },
-        "110": {
-          type: "Client (Tier [0])",
-          class: 'client'
-        },
-        "200": {
-          type: "Your Organization",
-          class: ''
-        },
-        "210": {
-          type: "Vendor (Tier [0])",
-          class: 'vendor'
-        }
-      },
-      data: [
-        {
-          name: "Google Client",
-          type: 100,
-          url: "www.google.com",
-          children: [
-            {
-              id: 2,
-              name: "Accenture",
-              type: 110,
-              url: "www.accenture.com"
-            },
-            {
-              id: 1,
-              name: "RIGAPS",
-              type: 110,
-              url: "www.rigaps.com"
-            }
-          ]
-        },
-        {
-          name: "RIGAPS",
-          type: 200,
-          children: [
-            {
-              id: 1,
-              name: "Accenture",
-              type: 210,
-              url: "www.accenture.com"
-            },
-            {
-              id: 2,
-              name: "RIGAPS",
-              type: 210,
-              url: "www.rigaps.com"
-            },
-            {
-              id: 3,
-              name: "RIGAPS",
-              type: 210,
-              url: "www.rigaps.com"
-            }
-          ]
-        }        
-      ]
-    }
-  },
   components: {
     Edit
+  },
+  data() {
+    return{
+      typeData: {},
+      data: []
+    }
+  },
+  computed: {
+    getPopupDialogState() {
+      return this.$store.getters.getPopupDialogState;
+    },
+    getData() {
+      return this.$store.getters.getData;
+    },
+    getTypeData() {
+      return this.$store.getters.getTypeData;
+    }
+  },
+  methods: {
+    showPopupDialog() {
+      this.$store.dispatch('showHidePopupDialog', true)
+    }
+  },
+  created() {
+    this.data = this.getData;
+    this.typeData = this.getTypeData;
   }
 }
 </script>

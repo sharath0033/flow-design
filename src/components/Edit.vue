@@ -58,8 +58,8 @@ veniam, quis nostrud exercitation ullamco laboris</div>
       </section>
       <footer>
         <div class="btnGroup">
-          <button v-on:click="showPopupDialog = false">Cancel</button>
-          <button>Update</button>
+          <button v-on:click="hidePopupDialog">Cancel</button>
+          <button v-on:click="saveChanges">Update</button>
         </div>
       </footer>
     </div>
@@ -68,7 +68,23 @@ veniam, quis nostrud exercitation ullamco laboris</div>
 
 <script>
 export default {
-  name: 'Edit'
+  name: 'Edit',
+  data() {
+  },
+  computed: {
+    
+  },
+  methods: {
+    hidePopupDialog() {
+      this.$store.dispatch('showHidePopupDialog', false)
+    },
+    saveChanges() {
+      this.$store.dispatch('saveChanges', false)
+    }
+  },
+  created() {
+
+  }
 }
 </script>
 
