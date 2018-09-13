@@ -1,21 +1,30 @@
 <template>
   <div id="wrapper">
     <div id="home-container">
-      <div id="editBtn" v-on:click="showPopupDialog = true">Edit</div>
+      <div id="editBtn" v-on:click="showPopupDialog">Edit</div>
       <div id="section">
 
         <template v-for="item in data">
-          <div class="module" :key="item.itemId">
-            <div class="content" v-bind:class="typeData[item.type].class">
-              <div class="type">{{ typeData[item.type].type }}</div>
+          <div class="module" :key="item.id">
+            <div class="content" v-bind:class="typeData[item.id].class">
+              <div class="type">{{ typeData[item.id].type }}</div>
               <div class="name">{{ item.name }}</div>            
             </div>
           </div>
 
-          <template v-if="item.children">
-            <div class="module" v-for="subItem in item.children" :key="subItem.subItem">
+          <template v-if="item.id == 100 && item.children.length>0">
+            <div class="module" v-for="(subItem, subIndex) in item.children.slice().reverse()" :key="subItem.cid">
               <div class="content" v-bind:class="typeData[subItem.type].class">
-                <div class="type">{{ typeData[subItem.type].type.replace('[0]', subItem.id) }}</div>
+                <div class="type">{{ typeData[subItem.type].type.replace('[0]', item.children.length - subIndex) }}</div>
+                <div class="name">{{ subItem.name }}</div>            
+              </div>
+            </div>
+          </template>
+          
+          <template v-if="item.id == 200 && item.children.length>0">
+            <div class="module" v-for="(subItem, subIndex) in item.children" :key="subItem.vid">
+              <div class="content" v-bind:class="typeData[subItem.type].class">
+                <div class="type">{{ typeData[subItem.type].type.replace('[0]', subIndex + 1) }}</div>
                 <div class="name">{{ subItem.name }}</div>            
               </div>
             </div>
@@ -26,7 +35,7 @@
       </div>
     </div>
 
-    <Edit v-show="showPopupDialog"/>
+    <Edit v-show="getPopupDialogState"/>
     
   </div>
 </template>
@@ -36,76 +45,35 @@ import Edit from './Edit.vue'
 
 export default {
   name: 'Home',
-  data: function() {
-    return{
-      showPopupDialog: true,
-      typeData: {
-        "100": {
-          type: "End Client",
-          class: 'client'
-        },
-        "110": {
-          type: "Client (Tier [0])",
-          class: 'client'
-        },
-        "200": {
-          type: "Your Organization",
-          class: ''
-        },
-        "210": {
-          type: "Vendor (Tier [0])",
-          class: 'vendor'
-        }
-      },
-      data: [
-        {
-          name: "Google Client",
-          type: 100,
-          url: "www.google.com",
-          children: [
-            {
-              id: 2,
-              name: "Accenture",
-              type: 110,
-              url: "www.accenture.com"
-            },
-            {
-              id: 1,
-              name: "RIGAPS",
-              type: 110,
-              url: "www.rigaps.com"
-            }
-          ]
-        },
-        {
-          name: "RIGAPS",
-          type: 200,
-          children: [
-            {
-              id: 1,
-              name: "Accenture",
-              type: 210,
-              url: "www.accenture.com"
-            },
-            {
-              id: 2,
-              name: "RIGAPS",
-              type: 210,
-              url: "www.rigaps.com"
-            },
-            {
-              id: 3,
-              name: "RIGAPS",
-              type: 210,
-              url: "www.rigaps.com"
-            }
-          ]
-        }        
-      ]
-    }
-  },
   components: {
     Edit
+  },
+  data() {
+    return{
+      typeData: this.$store.state.typeData,
+      data: _.cloneDeep(this.$store.getters.getData)
+    }
+  },
+  computed: {
+    getPopupDialogState() {
+      return this.$store.getters.getPopupDialogState;
+    },
+    getTypeData() {
+      return this.$store.getters.getTypeData;
+    },
+    getData() {
+      return this.$store.getters.getData;
+    }
+  },
+  methods: {
+    showPopupDialog() {
+      this.$store.commit('showHidePopupDialog', true);
+    }
+  },
+  watch: {
+    getData(n, o){
+      this.data = _.cloneDeep(this.$store.getters.getData);
+    }
   }
 }
 </script>
@@ -211,12 +179,12 @@ export default {
             .type {
               color: #777777;
               margin-bottom: 5px;
-              font-size: 12px;
+              font-size: 11px;
             }
             .name {
               color: #123262;
               font-weight: bold;
-              font-size: 12px;
+              font-size: 11px;
             }
           }
         }
