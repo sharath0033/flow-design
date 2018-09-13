@@ -29,13 +29,13 @@ veniam, quis nostrud exercitation ullamco laboris</div>
               <div class="formGroup" :key="item.cid">
                 <div class="formItem">
                   <label>Client Name</label>
-                  <input type="text" v-model="item.name"/>
-                  <div class="error">This field can’t be left blank.</div>
+                  <input type="text" v-model="item.name" v-bind:class="{ required : validateNameField(item) }"/>
+                  <div class="requiredMsg" v-show="validateNameField(item)">{{ requiredMessage }}</div>
                 </div>
                 <div class="formItem">
                   <label>Client Website</label>
-                  <input type="text" v-model="item.url"/>
-                  <div class="error">This field can’t be left blank.</div>
+                  <input type="text" v-model="item.url" v-bind:class="{ required : validateUrlField(item) }"/>
+                  <div class="requiredMsg" v-show="validateUrlField(item)">{{ requiredMessage }}</div>
                 </div>
                 <div class="removeBtn" v-on:click="removeClientModule(item.cid)">x</div>
               </div>
@@ -62,13 +62,13 @@ veniam, quis nostrud exercitation ullamco laboris</div>
               <div class="formGroup" :key="item.vid">
                 <div class="formItem">
                   <label>Vendor Name</label>
-                  <input type="text" v-model="item.name"/>
-                  <div class="error">This field can’t be left blank.</div>
+                  <input type="text" v-model="item.name" v-bind:class="{ required : validateNameField(item) }"/>
+                  <div class="requiredMsg" v-show="validateNameField(item)">{{ requiredMessage }}</div>
                 </div>
                 <div class="formItem">
                   <label>Vendor Website</label>
-                  <input type="text" v-model="item.url"/>
-                  <div class="error">This field can’t be left blank.</div>
+                  <input type="text" v-model="item.url" v-bind:class="{ required : validateUrlField(item) }"/>
+                  <div class="requiredMsg" v-show="validateUrlField(item)">{{ requiredMessage }}</div>
                 </div>
                 <div class="removeBtn" v-on:click="removeVendorModule(item.vid)">x</div>
               </div>
@@ -98,7 +98,8 @@ export default {
   name: 'Edit',
   data() {
     return{
-      data: _.cloneDeep(this.$store.getters.getData)
+      data: _.cloneDeep(this.$store.getters.getData),
+      requiredMessage: 'This field can’t be left blank.'
     }
   },
   computed: {},
@@ -112,15 +113,36 @@ export default {
       this.data = _.cloneDeep(this.$store.getters.getData);
       this.$store.commit('showHidePopupDialog', false);
     },
+    validateNameField(item) {
+      return item.name == '' && item.nameValidation;
+    },
+    validateUrlField(item) {
+      return item.url == '' && item.urlValidation;
+    },
     saveChanges() {
-      this.$store.commit('saveChanges', this.data);
+      var ccount = _.filter(this.data[0].children, (o) => {
+        o.nameValidation = (o.name == '' ? true : false);
+        o.urlValidation = (o.url == '' ? true : false);
+        return o.nameValidation || o.urlValidation;
+      });
+      var vcount = _.filter(this.data[1].children, (o) => {
+        o.nameValidation = (o.name == '' ? true : false);
+        o.urlValidation = (o.url == '' ? true : false);
+        return o.nameValidation || o.urlValidation;
+      });
+
+      if(ccount.length == 0 && vcount.length == 0){
+        this.$store.commit('saveChanges', this.data);
+      }
     },
     addClientModule(_id) {
       var cobject = {
         cid: this.generateUUID(),
-        name: "",
+        name: '',
         type: 110,
-        url: ""
+        url: '',
+        nameValidation: false,
+        urlValidation: false
       };
       
       if(_id){
@@ -135,9 +157,11 @@ export default {
     addVendorModule(_id) {
       var vobject = {
         vid: this.generateUUID(),
-        name: "",
+        name: '',
         type: 210,
-        url: ""
+        url: '',
+        nameValidation: false,
+        urlValidation: false
       };
 
       if(_id){
@@ -215,17 +239,16 @@ export default {
                   color: #3c3c3c;
                   background-color: #dcdcdc;
                 }
-                &.error{
+                &.required{
                   border-color: #d50921;
                 }
               }
-              .error{
+              .requiredMsg{
                 font-size: 10px;
                 color: #d50921;
                 position: absolute;
                 bottom: -16px;
                 left: 2px;
-                display: none;
               }
             }
             .removeBtn{
