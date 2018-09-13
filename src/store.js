@@ -6,74 +6,70 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     showPopupDialog: false,
-      typeData: {
-        "100": {
-          type: "End Client",
-          class: 'client'
-        },
-        "110": {
-          type: "Client (Tier [0])",
-          class: 'client'
-        },
-        "200": {
-          type: "Your Organization",
-          class: ''
-        },
-        "210": {
-          type: "Vendor (Tier [0])",
-          class: 'vendor'
-        }
+    typeData: {
+      "100": {
+        type: "End Client",
+        class: 'client'
       },
-      data: [
-        {
-          name: "Google Client",
-          type: 100,
-          url: "www.google.com",
-          children: [{
-              id: 2,
-              name: "Accenture",
-              type: 110,
-              url: "www.accenture.com"
-            },
-            {
-              id: 1,
-              name: "RIGAPS",
-              type: 110,
-              url: "www.rigaps.com"
-            }]
-        },
-        {
-          name: "RIGAPS",
-          type: 200,
-          children: [{
-              id: 2,
-              name: "Accenture",
-              type: 210,
-              url: "www.accenture.com"
-            },
-            {
-              id: 1,
-              name: "RIGAPS",
-              type: 210,
-              url: "www.rigaps.com"
-            }]
-        }        
-      ]
+      "110": {
+        type: "Client (Tier [0])",
+        class: 'client'
+      },
+      "200": {
+        type: "Your Organization",
+        class: ''
+      },
+      "210": {
+        type: "Vendor (Tier [0])",
+        class: 'vendor'
+      }
+    },
+    data: [
+      {
+        id: 100,
+        name: "Google Client",
+        url: "www.google.com",
+        children: [{
+            id: 111,
+            name: "Accenture",
+            type: 110,
+            url: "www.accenture.com"
+          },
+          {
+            id: 222,
+            name: "RIGAPS",
+            type: 110,
+            url: "www.rigaps.com"
+          }]
+      },
+      {
+        id: 200,
+        name: "RIGAPS",
+        children: [{
+            id: 121,
+            name: "Accenture",
+            type: 210,
+            url: "www.accenture.com"
+          },
+          {
+            id: 122,
+            name: "RIGAPS",
+            type: 210,
+            url: "www.rigaps.com"
+          }]
+      }        
+    ]
   },
   mutations: {
-    setPopupDialogState (state, payload) {
-      state.showPopupDialog = payload
-    }
-  },
-  actions: {
-    showHidePopupDialog ({commit}, payload) {
-      commit('setPopupDialogState', payload)
+    showHidePopupDialog (state, payload) {
+      state.showPopupDialog = payload;
     },
-    saveChanges({commit}) {
-
-      commit('setPopupDialogState', false)
+    saveChanges (state, payload) {
+      state.data = payload;
+      state.showPopupDialog = false;
     }
   },
+  actions: {},
   getters: {
     getPopupDialogState: state => {
       return state.showPopupDialog;

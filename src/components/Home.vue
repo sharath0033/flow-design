@@ -5,17 +5,26 @@
       <div id="section">
 
         <template v-for="item in data">
-          <div class="module" :key="item.itemId">
-            <div class="content" v-bind:class="typeData[item.type].class">
-              <div class="type">{{ typeData[item.type].type }}</div>
+          <div class="module" :key="item.id">
+            <div class="content" v-bind:class="typeData[item.id].class">
+              <div class="type">{{ typeData[item.id].type }}</div>
               <div class="name">{{ item.name }}</div>            
             </div>
           </div>
 
-          <template v-if="item.children.length>0">
-            <div class="module" v-for="subItem in item.children" :key="subItem.subItem">
+          <template v-if="item.id == 100 && item.children.length>0">
+            <div class="module" v-for="(subItem, subIndex) in item.children.slice().reverse()" :key="subItem.cid">
               <div class="content" v-bind:class="typeData[subItem.type].class">
-                <div class="type">{{ typeData[subItem.type].type.replace('[0]', subItem.id) }}</div>
+                <div class="type">{{ typeData[subItem.type].type.replace('[0]', item.children.length - subIndex) }}</div>
+                <div class="name">{{ subItem.name }}</div>            
+              </div>
+            </div>
+          </template>
+          
+          <template v-if="item.id == 200 && item.children.length>0">
+            <div class="module" v-for="(subItem, subIndex) in item.children" :key="subItem.vid">
+              <div class="content" v-bind:class="typeData[subItem.type].class">
+                <div class="type">{{ typeData[subItem.type].type.replace('[0]', subIndex + 1) }}</div>
                 <div class="name">{{ subItem.name }}</div>            
               </div>
             </div>
@@ -41,29 +50,30 @@ export default {
   },
   data() {
     return{
-      typeData: {},
-      data: []
+      typeData: this.$store.state.typeData,
+      data: this.$store.state.data
     }
   },
   computed: {
     getPopupDialogState() {
       return this.$store.getters.getPopupDialogState;
     },
-    getData() {
-      return this.$store.getters.getData;
-    },
     getTypeData() {
       return this.$store.getters.getTypeData;
+    },
+    getData() {
+      return this.$store.getters.getData;
     }
   },
   methods: {
     showPopupDialog() {
-      this.$store.dispatch('showHidePopupDialog', true)
+      this.$store.commit('showHidePopupDialog', true);
     }
   },
-  created() {
-    this.data = this.getData;
-    this.typeData = this.getTypeData;
+  watch: {
+    getData(n, o){
+      this.data = n;
+    }
   }
 }
 </script>

@@ -21,12 +21,12 @@ veniam, quis nostrud exercitation ullamco laboris</div>
             </div>
 
             <div class="inputGroup">
-              <div class="addBtn">+</div>
+              <div class="addBtn" v-on:click="addClientModule">+</div>
               <label>Add Another Client</label>
             </div>
 
             <template v-for="item in data[0].children">
-              <div class="formGroup" :key="item.id">
+              <div class="formGroup" :key="item.cid">
                 <div class="formItem">
                   <label>Client Name</label>
                   <input type="text" v-bind:value="item.name"/>
@@ -59,7 +59,7 @@ veniam, quis nostrud exercitation ullamco laboris</div>
             </div>
 
             <template v-for="item in data[1].children">
-              <div class="formGroup" :key="item.id">
+              <div class="formGroup" :key="item.vid">
                 <div class="formItem">
                   <label>Vendor Name</label>
                   <input type="text" v-bind:value="item.name"/>
@@ -92,11 +92,13 @@ veniam, quis nostrud exercitation ullamco laboris</div>
 </template>
 
 <script>
+import * as _ from 'lodash';
+
 export default {
   name: 'Edit',
   data() {
     return{
-      data: []
+      data: _.cloneDeep(this.$store.state.data)
     }
   },
   computed: {
@@ -105,15 +107,25 @@ export default {
     }
   },
   methods: {
+    generateUUID() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+    },
     hidePopupDialog() {
-      this.$store.dispatch('showHidePopupDialog', false)
+      this.$store.commit('showHidePopupDialog', false)
     },
     saveChanges() {
-      this.$store.dispatch('saveChanges', false)
+      this.$store.commit('saveChanges', this.data)
+    },
+    addClientModule() {
+      this.data[0].children.push({
+        cid: this.generateUUID(),
+        name: "",
+        type: 110,
+        url: ""
+      });
     }
-  },
-  created() {
-    this.data = this.getData;
   }
 }
 </script>
