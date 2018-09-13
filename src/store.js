@@ -29,34 +29,12 @@ export default new Vuex.Store({
         id: 100,
         name: "Google Client",
         url: "www.google.com",
-        children: [{
-            id: 111,
-            name: "Accenture",
-            type: 110,
-            url: "www.accenture.com"
-          },
-          {
-            id: 222,
-            name: "RIGAPS",
-            type: 110,
-            url: "www.rigaps.com"
-          }]
+        children: []
       },
       {
         id: 200,
         name: "RIGAPS",
-        children: [{
-            id: 121,
-            name: "Accenture",
-            type: 210,
-            url: "www.accenture.com"
-          },
-          {
-            id: 122,
-            name: "RIGAPS",
-            type: 210,
-            url: "www.rigaps.com"
-          }]
+        children: []
       }        
     ]
   },

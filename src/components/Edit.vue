@@ -21,7 +21,7 @@ veniam, quis nostrud exercitation ullamco laboris</div>
             </div>
 
             <div class="inputGroup">
-              <div class="addBtn" v-on:click="addClientModule">+</div>
+              <div class="addBtn" v-on:click="addClientModule(null)">+</div>
               <label>Add Another Client</label>
             </div>
 
@@ -29,19 +29,19 @@ veniam, quis nostrud exercitation ullamco laboris</div>
               <div class="formGroup" :key="item.cid">
                 <div class="formItem">
                   <label>Client Name</label>
-                  <input type="text" v-bind:value="item.name"/>
+                  <input type="text" v-model="item.name"/>
                   <div class="error">This field can’t be left blank.</div>
                 </div>
                 <div class="formItem">
                   <label>Client Website</label>
-                  <input type="text" v-bind:value="item.url"/>
+                  <input type="text" v-model="item.url"/>
                   <div class="error">This field can’t be left blank.</div>
                 </div>
-                <div class="removeBtn">x</div>
+                <div class="removeBtn" v-on:click="removeClientModule(item.cid)">x</div>
               </div>
 
               <div class="inputGroup">
-                <div class="addBtn">+</div>
+                <div class="addBtn" v-on:click="addClientModule(item.cid)">+</div>
                 <label>Add Another Client</label>
               </div>
             </template>
@@ -54,7 +54,7 @@ veniam, quis nostrud exercitation ullamco laboris</div>
             </div>
 
             <div class="inputGroup">
-              <div class="addBtn">+</div>
+              <div class="addBtn" v-on:click="addVendorModule(null)">+</div>
               <label>Add Another Vendor</label>
             </div>
 
@@ -62,19 +62,19 @@ veniam, quis nostrud exercitation ullamco laboris</div>
               <div class="formGroup" :key="item.vid">
                 <div class="formItem">
                   <label>Vendor Name</label>
-                  <input type="text" v-bind:value="item.name"/>
+                  <input type="text" v-model="item.name"/>
                   <div class="error">This field can’t be left blank.</div>
                 </div>
                 <div class="formItem">
                   <label>Vendor Website</label>
-                  <input type="text" v-bind:value="item.url"/>
+                  <input type="text" v-model="item.url"/>
                   <div class="error">This field can’t be left blank.</div>
                 </div>
-                <div class="removeBtn">x</div>
+                <div class="removeBtn" v-on:click="removeVendorModule(item.vid)">x</div>
               </div>
 
               <div class="inputGroup">
-                <div class="addBtn">+</div>
+                <div class="addBtn" v-on:click="addVendorModule(item.vid)">+</div>
                 <label>Add Another Vendor</label>
               </div>
             </template>
@@ -98,14 +98,10 @@ export default {
   name: 'Edit',
   data() {
     return{
-      data: _.cloneDeep(this.$store.state.data)
+      data: _.cloneDeep(this.$store.getters.getData)
     }
   },
-  computed: {
-    getData() {
-      return this.$store.getters.getData;
-    }
-  },
+  computed: {},
   methods: {
     generateUUID() {
       return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -113,18 +109,45 @@ export default {
       )
     },
     hidePopupDialog() {
-      this.$store.commit('showHidePopupDialog', false)
+      this.data = _.cloneDeep(this.$store.getters.getData);
+      this.$store.commit('showHidePopupDialog', false);
     },
     saveChanges() {
-      this.$store.commit('saveChanges', this.data)
+      this.$store.commit('saveChanges', this.data);
     },
-    addClientModule() {
-      this.data[0].children.push({
+    addClientModule(_id) {
+      var cobject = {
         cid: this.generateUUID(),
         name: "",
         type: 110,
         url: ""
-      });
+      };
+      
+      if(_id){
+        this.data[0].children.splice(_.findIndex(this.data[0].children, (o) => o.cid == _id) + 1, 0, cobject);
+      }else{
+        this.data[0].children.unshift(cobject);
+      }
+    },
+    removeClientModule(_id) {
+      this.data[0].children = _.filter(this.data[0].children, (o) => o.cid != _id);
+    },
+    addVendorModule(_id) {
+      var vobject = {
+        vid: this.generateUUID(),
+        name: "",
+        type: 210,
+        url: ""
+      };
+
+      if(_id){
+        this.data[1].children.splice(_.findIndex(this.data[1].children, (o) => o.vid == _id) + 1, 0, vobject);
+      }else{
+        this.data[1].children.unshift(vobject);
+      }
+    },
+    removeVendorModule(_id) {
+      this.data[1].children = _.filter(this.data[1].children, (o) => o.vid != _id);
     }
   }
 }
