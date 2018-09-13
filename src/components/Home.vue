@@ -51,7 +51,7 @@ export default {
   data() {
     return{
       typeData: this.$store.state.typeData,
-      data: this.$store.state.data
+      data: _.cloneDeep(this.$store.getters.getData)
     }
   },
   computed: {
@@ -72,7 +72,7 @@ export default {
   },
   watch: {
     getData(n, o){
-      this.data = n;
+      this.data = _.cloneDeep(this.$store.getters.getData);
     }
   }
 }
