@@ -4,7 +4,7 @@
       <div id="editBtn" v-on:click="showPopupDialog">Edit</div>
       <div id="section">
 
-        <template v-for="item in getData">
+        <template v-for="item in data">
           <div class="module" :key="item.itemId">
             <div class="content" v-bind:class="typeData[item.type].class">
               <div class="type">{{ typeData[item.type].type }}</div>

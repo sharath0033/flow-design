@@ -25,23 +25,27 @@ veniam, quis nostrud exercitation ullamco laboris</div>
               <label>Add Another Client</label>
             </div>
 
-            <div class="formGroup">
-              <div class="formItem">
-                <label>Client Name</label>
-                <input type="text" value="Google"/>
+            <template v-for="item in data[0].children">
+              <div class="formGroup" :key="item.id">
+                <div class="formItem">
+                  <label>Client Name</label>
+                  <input type="text" v-bind:value="item.name"/>
+                  <div class="error">This field can’t be left blank.</div>
+                </div>
+                <div class="formItem">
+                  <label>Client Website</label>
+                  <input type="text" v-bind:value="item.url"/>
+                  <div class="error">This field can’t be left blank.</div>
+                </div>
+                <div class="removeBtn">x</div>
               </div>
-              <div class="formItem">
-                <label>Client Website</label>
-                <input type="text" value="www.google.com"/>
+
+              <div class="inputGroup">
+                <div class="addBtn">+</div>
+                <label>Add Another Client</label>
               </div>
-              <div class="removeBtn">x</div>
-            </div>
-
-            <div class="inputGroup">
-              <div class="addBtn">+</div>
-              <label>Add Another Client</label>
-            </div>
-
+            </template>
+          
             <div class="formGroup">
               <div class="formItem">
                 <label>Your Organization</label>
@@ -53,6 +57,27 @@ veniam, quis nostrud exercitation ullamco laboris</div>
               <div class="addBtn">+</div>
               <label>Add Another Vendor</label>
             </div>
+
+            <template v-for="item in data[1].children">
+              <div class="formGroup" :key="item.id">
+                <div class="formItem">
+                  <label>Vendor Name</label>
+                  <input type="text" v-bind:value="item.name"/>
+                  <div class="error">This field can’t be left blank.</div>
+                </div>
+                <div class="formItem">
+                  <label>Vendor Website</label>
+                  <input type="text" v-bind:value="item.url"/>
+                  <div class="error">This field can’t be left blank.</div>
+                </div>
+                <div class="removeBtn">x</div>
+              </div>
+
+              <div class="inputGroup">
+                <div class="addBtn">+</div>
+                <label>Add Another Vendor</label>
+              </div>
+            </template>
 
           </div>
       </section>
@@ -70,9 +95,14 @@ veniam, quis nostrud exercitation ullamco laboris</div>
 export default {
   name: 'Edit',
   data() {
+    return{
+      data: []
+    }
   },
   computed: {
-    
+    getData() {
+      return this.$store.getters.getData;
+    }
   },
   methods: {
     hidePopupDialog() {
@@ -83,7 +113,7 @@ export default {
     }
   },
   created() {
-
+    this.data = this.getData;
   }
 }
 </script>
@@ -92,18 +122,16 @@ export default {
   #edit-container {
     position: absolute;
     width: 100%;
-    height: 1000px;
     top: 0px;
     left: 0px;
     background-color: rgba(0, 0, 0, 0.6);
     #popupDialog{
-      width: 800px;
+      min-width: 700px;
       width: 62%;
       background-color: #ffffff;
-      margin: auto;
+      margin: 100px auto;
       display: inline-block;
       border-radius: 4px;
-      margin-top: 100px;
       header{
         border-bottom: 1px solid #dfdfdf;
         #title{
@@ -141,6 +169,7 @@ export default {
               width: 225px;
               display: inline-block;
               margin-right: 15px;
+              position: relative;
               input{
                 padding: 8px 10px;
                 margin-top: 5px;
@@ -151,6 +180,17 @@ export default {
                   color: #3c3c3c;
                   background-color: #dcdcdc;
                 }
+                &.error{
+                  border-color: #d50921;
+                }
+              }
+              .error{
+                font-size: 10px;
+                color: #d50921;
+                position: absolute;
+                bottom: -16px;
+                left: 2px;
+                display: none;
               }
             }
             .removeBtn{

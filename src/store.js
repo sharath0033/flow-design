@@ -48,13 +48,13 @@ export default new Vuex.Store({
           children: [{
               id: 2,
               name: "Accenture",
-              type: 110,
+              type: 210,
               url: "www.accenture.com"
             },
             {
               id: 1,
               name: "RIGAPS",
-              type: 110,
+              type: 210,
               url: "www.rigaps.com"
             }]
         }        
@@ -63,7 +63,7 @@ export default new Vuex.Store({
   mutations: {
     setPopupDialogState (state, payload) {
       state.showPopupDialog = payload
-    },
+    }
   },
   actions: {
     showHidePopupDialog ({commit}, payload) {
