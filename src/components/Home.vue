@@ -211,12 +211,12 @@ export default {
             .type {
               color: #777777;
               margin-bottom: 5px;
-              font-size: 12px;
+              font-size: 11px;
             }
             .name {
               color: #123262;
               font-weight: bold;
-              font-size: 12px;
+              font-size: 11px;
             }
           }
         }
