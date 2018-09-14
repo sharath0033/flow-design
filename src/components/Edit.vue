@@ -184,6 +184,7 @@ export default {
     top: 0px;
     left: 0px;
     background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
     #popupDialog{
       min-width: 700px;
       width: 62%;
