@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as _ from 'lodash';
 
 Vue.use(Vuex)
 
@@ -43,7 +44,7 @@ export default new Vuex.Store({
       state.showPopupDialog = payload;
     },
     saveChanges (state, payload) {
-      state.data = payload;
+      state.data =  _.cloneDeep(payload);
       state.showPopupDialog = false;
     }
   },

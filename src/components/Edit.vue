@@ -260,7 +260,7 @@ export default {
               color: #d50921;
               text-align: center;
               font-size: 14px;
-              line-height: 18px;
+              line-height: 20px;
               vertical-align: middle;
               cursor: pointer;
             }
@@ -299,7 +299,7 @@ export default {
               color: #5596e7;
               text-align: center;
               font-size: 16px;
-              line-height: 18px;
+              line-height: 20px;
               vertical-align: middle;
               cursor: pointer;
             }
@@ -325,6 +325,7 @@ export default {
             border-radius: 5px;
             margin: 0px 10px;
             cursor: pointer;
+            background-color: #ffffff;
             &:hover{
               background-color: #123262;
               color: #ffffff;
