@@ -1,42 +1,45 @@
 <template>
   <div id="wrapper">
-    <div id="home-container">
-      <div id="editBtn" v-on:click="showPopupDialog">Edit</div>
-      <div id="section">
 
-        <template v-for="item in data">
-          <div class="module" :key="item.id">
-            <div class="content" v-bind:class="typeData[item.id].class">
-              <div class="type">{{ typeData[item.id].type }}</div>
-              <div class="name">{{ item.name }}</div>            
-            </div>
-          </div>
+    <Edit v-show="getPopupDialogState"/>
 
-          <template v-if="item.id == 100 && item.children.length>0">
-            <div class="module" v-for="(subItem, subIndex) in item.children.slice().reverse()" :key="subItem.cid">
-              <div class="content" v-bind:class="typeData[subItem.type].class">
-                <div class="type">{{ typeData[subItem.type].type.replace('[0]', item.children.length - subIndex) }}</div>
-                <div class="name">{{ subItem.name }}</div>            
+    <div id="homeWrapper">
+      <div id="home-container">
+        <div id="editBtn" v-on:click="showPopupDialog">Edit</div>
+        <div id="section">
+
+          <template v-for="item in data">
+            <div class="module" :key="item.id">
+              <div class="content" v-bind:class="typeData[item.id].class">
+                <div class="type">{{ typeData[item.id].type }}</div>
+                <div class="name">{{ item.name }}</div>            
               </div>
             </div>
+
+            <template v-if="item.id == 100 && item.children.length>0">
+              <div class="module" v-for="(subItem, subIndex) in item.children.slice().reverse()" :key="subItem.cid">
+                <div class="content" v-bind:class="typeData[subItem.type].class">
+                  <div class="type">{{ typeData[subItem.type].type.replace('[0]', item.children.length - subIndex) }}</div>
+                  <div class="name">{{ subItem.name }}</div>            
+                </div>
+              </div>
+            </template>
+            
+            <template v-if="item.id == 200 && item.children.length>0">
+              <div class="module" v-for="(subItem, subIndex) in item.children" :key="subItem.vid">
+                <div class="content" v-bind:class="typeData[subItem.type].class">
+                  <div class="type">{{ typeData[subItem.type].type.replace('[0]', subIndex + 1) }}</div>
+                  <div class="name">{{ subItem.name }}</div>            
+                </div>
+              </div>
+            </template>
+
           </template>
           
-          <template v-if="item.id == 200 && item.children.length>0">
-            <div class="module" v-for="(subItem, subIndex) in item.children" :key="subItem.vid">
-              <div class="content" v-bind:class="typeData[subItem.type].class">
-                <div class="type">{{ typeData[subItem.type].type.replace('[0]', subIndex + 1) }}</div>
-                <div class="name">{{ subItem.name }}</div>            
-              </div>
-            </div>
-          </template>
-
-        </template>
-        
+        </div>
       </div>
     </div>
 
-    <Edit v-show="getPopupDialogState"/>
-    
   </div>
 </template>
 
@@ -51,7 +54,7 @@ export default {
   data() {
     return{
       typeData: this.$store.state.typeData,
-      data: _.cloneDeep(this.$store.getters.getData)
+      data: this.$store.getters.getData
     }
   },
   computed: {
@@ -72,7 +75,7 @@ export default {
   },
   watch: {
     getData(n, o){
-      this.data = _.cloneDeep(this.$store.getters.getData);
+      this.data = n;
     }
   }
 }
@@ -81,15 +84,22 @@ export default {
 <style scoped lang="less">
   #wrapper {
     position: relative;
+    #homeWrapper{
+      position: absolute;
+      width: 100%;
+    }
     #home-container {
+      top: 0px;
+      left: 0px;
       width: 80%;
       border: 1px solid #dfdefe;
       border-radius: 6px;
       position: relative;
-      margin: auto;
+      margin: 12% auto;
       padding: 30px 0px;
       
       #section {
+        padding: 0px 40px;
         .module {
           border: 1px solid #dfdfdf;
           margin: 40px;

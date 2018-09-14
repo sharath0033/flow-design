@@ -184,6 +184,7 @@ export default {
     top: 0px;
     left: 0px;
     background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
     #popupDialog{
       min-width: 700px;
       width: 62%;
@@ -260,7 +261,7 @@ export default {
               color: #d50921;
               text-align: center;
               font-size: 14px;
-              line-height: 18px;
+              line-height: 20px;
               vertical-align: middle;
               cursor: pointer;
             }
@@ -299,7 +300,7 @@ export default {
               color: #5596e7;
               text-align: center;
               font-size: 16px;
-              line-height: 18px;
+              line-height: 20px;
               vertical-align: middle;
               cursor: pointer;
             }
@@ -325,6 +326,7 @@ export default {
             border-radius: 5px;
             margin: 0px 10px;
             cursor: pointer;
+            background-color: #ffffff;
             &:hover{
               background-color: #123262;
               color: #ffffff;
