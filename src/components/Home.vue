@@ -106,7 +106,6 @@ export default {
           display: inline-block;
           border-radius: 6px;
           text-align: left;
-          min-width: 120px;
           box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .14), 0 3px 3px -2px rgba(0, 0, 0, 0), 0 1px 8px 0 rgba(0, 0, 0, 0);
           position: relative;
           &:not(:last-child){
@@ -136,6 +135,7 @@ export default {
           .content{
             position: relative;
             padding: 10px 20px;
+            width: 100px;
             &.client, &.vendor{
               &::before, &::after {
                 border-right: 1px solid #dfdfdf;
@@ -195,6 +195,10 @@ export default {
               color: #123262;
               font-weight: bold;
               font-size: 11px;
+              width: 100%;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
             }
           }
         }
