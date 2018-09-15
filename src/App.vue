@@ -18,6 +18,10 @@ export default {
 </script>
 
 <style lang="less">
+  html, body, #app, #wrapper{
+    width: 100%;
+    height: 100%;
+  }
   body{
     margin: 0px;
     #app {

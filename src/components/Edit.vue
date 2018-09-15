@@ -181,6 +181,7 @@ export default {
   #edit-container {
     position: absolute;
     width: 100%;
+    height: 100%;
     top: 0px;
     left: 0px;
     background-color: rgba(0, 0, 0, 0.6);
@@ -205,6 +206,26 @@ export default {
         padding: 30px 40px;
         text-align: left;
         font-size: 12px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        max-height: 400px;
+        &::-webkit-scrollbar {
+          width: 6px;
+          margin: 2px 4px;
+          background-color: #F5F5F5;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 10px;
+          box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+          background-color: #868686;
+        }
+        &::-webkit-scrollbar-track {
+          box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+          border-radius: 10px;
+          background-color: #fff;
+        }
         #description{
           color: #636363;
         }
@@ -264,6 +285,7 @@ export default {
               line-height: 20px;
               vertical-align: middle;
               cursor: pointer;
+              user-select: none;
             }
           }
           .inputGroup{
@@ -303,6 +325,7 @@ export default {
               line-height: 20px;
               vertical-align: middle;
               cursor: pointer;
+              user-select: none;
             }
             label{
               font-weight: bold;
@@ -326,7 +349,9 @@ export default {
             border-radius: 5px;
             margin: 0px 10px;
             cursor: pointer;
+            user-select: none;
             background-color: #ffffff;
+            outline: none;
             &:hover{
               background-color: #123262;
               color: #ffffff;
