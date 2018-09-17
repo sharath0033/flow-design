@@ -26,7 +26,7 @@ veniam, quis nostrud exercitation ullamco laboris</div>
             </div>
 
             <template v-for="item in data[0].children">
-              <div class="formGroup" :key="item.cid">
+              <div class="formGroup" :key="'item'+item.cid">
                 <div class="formItem">
                   <label>Client Name</label>
                   <input type="text" v-model="item.name" v-bind:class="{ required : validateNameField(item) }"/>
@@ -40,7 +40,7 @@ veniam, quis nostrud exercitation ullamco laboris</div>
                 <div class="removeBtn" v-on:click="removeClientModule(item.cid)">x</div>
               </div>
 
-              <div class="inputGroup">
+              <div class="inputGroup" :key="'button'+item.cid">
                 <div class="addBtn" v-on:click="addClientModule(item.cid)">+</div>
                 <label>Add Another Client</label>
               </div>
@@ -59,7 +59,7 @@ veniam, quis nostrud exercitation ullamco laboris</div>
             </div>
 
             <template v-for="item in data[1].children">
-              <div class="formGroup" :key="item.vid">
+              <div class="formGroup" :key="'item'+item.vid">
                 <div class="formItem">
                   <label>Vendor Name</label>
                   <input type="text" v-model="item.name" v-bind:class="{ required : validateNameField(item) }"/>
@@ -73,7 +73,7 @@ veniam, quis nostrud exercitation ullamco laboris</div>
                 <div class="removeBtn" v-on:click="removeVendorModule(item.vid)">x</div>
               </div>
 
-              <div class="inputGroup">
+              <div class="inputGroup" :key="'button'+item.vid">
                 <div class="addBtn" v-on:click="addVendorModule(item.vid)">+</div>
                 <label>Add Another Vendor</label>
               </div>
